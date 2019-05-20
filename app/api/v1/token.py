@@ -29,9 +29,10 @@ def get_token():
                                 identity['scope'],
                                 expiration)
     t = {
-        'token': token.decode('ascii')
+        'token': token.decode('ascii'),
+        'msg': 'ok'
     }
-    return jsonify(t), 201
+    return jsonify(t), 200
 
 
 @api.route('/secret', methods=['POST'])
