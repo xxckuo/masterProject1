@@ -14,6 +14,9 @@ class Votelist(Base):
     votestatus = Column(SmallInteger,comment='投票状态，区别于status，status为删除使用，votestatus判断结束状态')
     votenum = Column(Integer,comment='投票人总数')
 
+    def keys(self):
+        return ['name', 'year', 'votetype', 'votestatus','votenum']
+
     @staticmethod
     def add_votelist(name, year, votetype,votestatus,votenum):
         with db.auto_commit():

@@ -8,6 +8,7 @@ class Success(APIException):
     code = 201
     msg = 'ok'
     error_code = 0
+    data = dict()
 
 
 class DeleteSuccess(Success):
