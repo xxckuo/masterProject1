@@ -21,7 +21,7 @@ def add_voter_to_voterin():
     jsonData = request.get_json()
     for voter in jsonData['data']:
         Voterin.add_voter_to_voterin(voter['vl_id'],voter['voter_id'])
-    return Success(msg='添加投票人成功')
+    return Success(msg='添加投票人成功',error_code=201)
 
 @api.route('/addexcellentresult',methods=['POST'])
 def add_excellentresult():
@@ -33,7 +33,7 @@ def add_excellentresult():
             excres['agreenum'],
             excres['disagreenum'],
             excres['abstained'])
-    return Success(msg='初始化优秀毕业生投票结果成功')
+    return Success(msg='初始化优秀毕业生投票结果成功',error_code=201)
 
 @api.route('/graduateresult',methods=['POST'])
 def add_graduateresult():
@@ -48,4 +48,4 @@ def add_graduateresult():
             excres['d_agreenum'],
             excres['d_disagreenum'],
             excres['d_abstained'])
-    return Success(msg='初始化毕业生毕业授予学位投票结果成功')
+    return Success(msg='初始化毕业生毕业授予学位投票结果成功',error_code=201)

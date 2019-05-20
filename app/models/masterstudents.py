@@ -30,15 +30,16 @@ class Masterstudents(Base):
             masstu.tutor = tutor
             masstu.college = college
             masstu.thesisurl = thesisurl
+            masstu._password = 1
             db.session.add(masstu)
 
-    @property
-    def password(self):
-        return self._password
+    # @property
+    # def password(self):
+        # return self._password
 
-    @password.setter
-    def password(self, raw):
-        self._password = generate_password_hash(raw)
+    # @password.setter
+    # def password(self, raw):
+    #     self._password = generate_password_hash(raw)
 
     def check_password(self, raw):
         if not self._password:
