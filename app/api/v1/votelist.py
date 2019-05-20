@@ -1,7 +1,8 @@
-from flask import current_app, jsonify, request
+from flask import current_app, jsonify, request,g
 from app.libs.error_code import AuthFailed, Success
 from app.libs.redprint import Redprint
-from app.libs.token_auth import Voter
+from app.libs.token_auth import Voter, auth
+from app.models.base import db
 from app.models.excellentresult import Excellentresult
 from app.models.graduateresult import Graduateresult
 from app.models.votelist import Votelist
@@ -49,3 +50,17 @@ def add_graduateresult():
             excres['d_disagreenum'],
             excres['d_abstained'])
     return Success(msg='初始化毕业生毕业授予学位投票结果成功',error_code=201)
+
+@api.route('/getlist',methods=['POST'])
+@auth.login_required
+def get_user():
+    uid = g.voter.uid
+    # vote = Votelist.query.filter_by().all()
+    vote = Votelist()
+    res = db.session.query(Voterin).filter_by().all()
+    for r in res:
+        print(r['vl_id'])
+    data={
+        'ff':'fasfsfd'
+    }
+    return Success(data=data)
