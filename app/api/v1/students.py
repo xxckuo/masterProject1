@@ -10,7 +10,7 @@ from app.models.voterin import Voterin
 
 api = Redprint('students')
 
-@api.route('/addstudents')
+@api.route('/addstudents',methods=['POST'])
 def add_students():
     jsonData = request.get_json()
     Masterstudents.add_student(jsonData['name'],jsonData['account'],jsonData['major'],jsonData['title'],jsonData['tutor'],jsonData['college'],jsonData['thesisurl'])
