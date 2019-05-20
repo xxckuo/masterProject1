@@ -19,6 +19,19 @@ class Masterstudents(Base):
     def keys(self):
         return ['id', 'email', 'nickname', 'auth']
 
+    @staticmethod
+    def add_student(name, account, major, title, tutor,college,thesisurl):
+        with db.auto_commit():
+            masstu = Masterstudents()
+            masstu.name = name
+            masstu.account = account
+            masstu.major = major
+            masstu.title = title
+            masstu.tutor = tutor
+            masstu.college = college
+            masstu.thesisurl = thesisurl
+            db.session.add(masstu)
+
     @property
     def password(self):
         return self._password

@@ -12,3 +12,14 @@ class Excellentresult(Base):
     agreenum = Column(Integer,comment='同意数量')
     disagreenum = Column(Integer,comment='不同意数量')
     abstained = Column(Integer,comment='弃权数量')
+
+    @staticmethod
+    def add_result_to_excellent(s_id, vl_id,agreenum,disagreenum,abstained):
+        with db.auto_commit():
+            excres = Excellentresult()
+            excres.s_id = s_id
+            excres.vl_id = vl_id
+            excres.agreenum = agreenum
+            excres.disagreenum = disagreenum
+            excres.abstained = abstained
+            db.session.add(excres)

@@ -29,6 +29,7 @@ def get_token():
                                 identity['scope'],
                                 expiration)
     t = {
+        'code':200,
         'token': token.decode('ascii'),
         'msg': 'ok'
     }

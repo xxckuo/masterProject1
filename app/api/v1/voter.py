@@ -20,7 +20,7 @@ def super_get_user(uid):
 @api.route('', methods=['GET'])
 @auth.login_required
 def get_user():
-    uid = g.user.id
+    uid = g.voter.uid
     user = Voter.query.filter_by(id=uid).first_or_404(msg='mei zhao dao')
     return jsonify(user)
 
@@ -34,7 +34,7 @@ def super_delete_user(uid):
 @api.route('', methods=['DELETE'])
 @auth.login_required
 def delete_user():
-    uid = g.user.uid
+    uid = g.voter.uid
     with db.auto_commit():
         user = Voter.query.filter_by(id=uid).first_or_404(msg='mei zhao dao')
         user.delete()

@@ -27,7 +27,7 @@ def verify_password(token, password):
         return False
     else:
         # request
-        g.user = user_info
+        g.voter = user_info
         return True
 
 
