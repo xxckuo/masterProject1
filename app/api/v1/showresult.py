@@ -22,7 +22,7 @@ def add_students():
         results = db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,
                          Masterstudents.college,Masterstudents.thesisurl
-                         ).filter(Excellentresult.s_id==Masterstudents.s_id,Excellentresult.vl_id==jsonData['vl_id'],).all()
+                         ).filter(Excellentresult.s_id==Masterstudents.s_id,Excellentresult.vl_id==jsonData['vl_id'],).limit(jsonData['limit']).offset(jsonData['offset']).all()
 
         list = []
         for re in results:
@@ -55,7 +55,7 @@ def add_students():
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,
                          Masterstudents.college,Masterstudents.thesisurl
                          ).filter(Graduateresult.s_id==Masterstudents.s_id,Graduateresult.vl_id==jsonData['vl_id']
-                         ).all()
+                         ).limit(jsonData['limit']).offset(jsonData['offset']).all()
         list=[]
         for re in results:
             result = {}
