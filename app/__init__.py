@@ -13,6 +13,7 @@ def register_plugin(app):
     from app.models.masterstudents import Masterstudents
     from app.models.votelist import Votelist
     from app.models.voterin import Voterin
+
     db.init_app(app)
     with app.app_context():
         db.create_all()
