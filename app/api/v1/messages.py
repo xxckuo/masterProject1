@@ -10,7 +10,9 @@ from app.models.masterstudents import Masterstudents
 api = Redprint('getmessages')
 @api.route('/getmessages',methods = ['POST'])
 def getmessages():
+
     jsonData = request.get_json()
+
     if jsonData['votetype']== 1:
         a = db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,Masterstudents.s_id,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl,Masterstudents.name).join(Excellentresult,Excellentresult.s_id==Masterstudents.s_id).filter(Excellentresult.vl_id == jsonData['vl_id']).limit(jsonData['limit']).offset(jsonData['offset']).all()
         # b= db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,Voterin.voterinstatus,Voter.nickname,Voter.teacher_account,Voter.auth,Votelist.votestatus,Votelist.votenum).join(Voterin,Voterin.voter_id == Voter.id).filter(Voterin.vl_id == jsonData['vl_id'],Votelist.vl_id==jsonData['vl_id'],Excellentresult.vl_id==jsonData['vl_id']).all()
