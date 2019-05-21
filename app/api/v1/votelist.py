@@ -51,16 +51,3 @@ def add_graduateresult():
             excres['d_abstained'])
     return Success(msg='初始化毕业生毕业授予学位投票结果成功',error_code=201)
 
-@api.route('/getlist',methods=['POST'])
-@auth.login_required
-def get_user():
-    uid = g.voter.uid
-    # vote = Votelist.query.filter_by().all()
-    vote = Votelist()
-    res = db.session.query(Voterin).filter_by().all()
-    for r in res:
-        print(r['vl_id'])
-    data={
-        'ff':'fasfsfd'
-    }
-    return Success(data=data)
