@@ -15,6 +15,9 @@ def add_students():
     jsonData = request.get_json()
     x = fractions.Fraction(2, 3)
 
+    # 是否需要在全部完成投票后形成汇总
+    # 分页？
+    # 判断投票是否已结束，根据votestatus进行判断
     if int(jsonData['type']) ==1:
         results = db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,
