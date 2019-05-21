@@ -27,3 +27,9 @@ class Votelist(Base):
             votelist.votestatus = votestatus
             votelist.votenum = votenum
             db.session.add(votelist)
+
+    @staticmethod
+    def update_votelist_status(vl_id):
+        with db.auto_commit():
+            vote = Votelist.query.filter(Votelist.vl_id == vl_id).first()
+            vote.votestatus = 1
