@@ -14,21 +14,23 @@ api = Redprint('user')
 @auth.login_required
 def get_list():
     uid = g.voter.uid
-    datas = {}
-    vls = db.session.query(Voterin.vl_id,Votelist.name,Votelist.year,Votelist.votetype,Votelist.votestatus,Votelist.votenum).filter(
-        Voterin.voter_id==uid,Voterin.voterinstatus==0).filter(Voterin.vl_id==Votelist.vl_id).all()
+
+    vls = db.session.query(Voterin.vl_id,Voterin.voterinstatus,Votelist.name,Votelist.year,Votelist.votetype,Votelist.votestatus,Votelist.votenum).filter(
+        Voterin.voter_id==uid).filter(Voterin.vl_id==Votelist.vl_id).all()
     lists = []
     for vl in vls:
         list ={}
-        list['votelist_name'] = vl[1]
-        list['votelist_year'] = vl[2]
-        list['votelist_votetype'] = vl[3]
-        list['votelist_votestatus'] = vl[4]
-        list['votelist_votenum'] = vl[5]
+        list['voterin_vl+id'] = vl[0]
+        list['voterin.voterinstatus'] = vl[1]
+        list['votelist_name'] = vl[2]
+        list['votelist_year'] = vl[3]
+        list['votelist_votetype'] = vl[4]
+        list['votelist_votestatus'] = vl[5]
+        list['votelist_votenum'] = vl[6]
         lists.append(list)
-    print(lists)
 
-    return Success(msg='查询列表成功')
+
+    return Success(msg='查询列表成功',data = lists)
 
 
 @api.route('/<int:uid>', methods=['GET'])
