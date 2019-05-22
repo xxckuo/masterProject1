@@ -27,8 +27,8 @@ def get_list():
     lists = []
     for vl in vls:
         list ={}
-        list['voterin_vl+id'] = vl[0]
-        list['voterin.voterinstatus'] = vl[1]
+        list['vl_id'] = vl[0]
+        list['voterinstatus'] = vl[1]
         list['votelist_name'] = vl[2]
         list['votelist_year'] = vl[3]
         list['votelist_votetype'] = vl[4]
