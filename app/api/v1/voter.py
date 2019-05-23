@@ -49,6 +49,7 @@ def update_user():
     return 'update qiyue'
 
 @api.route('/uploadvoteresult',methods=['POST'])
+@auth.login_required
 def upload_vote_result():
     # 投票结果的上传
     jsonData = request.get_json()

@@ -3,6 +3,7 @@ import fractions
 from flask import  request
 from app.libs.error_code import  Success
 from app.libs.redprint import Redprint
+from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.excellentresult import Excellentresult
 from app.models.graduateresult import Graduateresult
@@ -11,6 +12,7 @@ from app.models.masterstudents import Masterstudents
 api = Redprint('show_result')
 
 @api.route('/show',methods=['POST'])
+@auth.login_required
 def add_students():
     jsonData = request.get_json()
     x = fractions.Fraction(2, 3)

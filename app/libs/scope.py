@@ -21,7 +21,7 @@ class Scope:
 class AdminScope(Scope):
     # allow_api = ['v1.user+super_get_user',
     #              'v1.user+super_delete_user']
-    allow_module = ['v1.user','v1.votelist']
+    allow_module = ['v1.user','v1.votelist','v1.getmessages','v1.show_result']
 
     def __init__(self):
         # 排除
@@ -30,7 +30,7 @@ class AdminScope(Scope):
 
 
 class UserScope(Scope):
-    allow_module = ['v1.voter+super_get_user', 'v1.gift']
+    allow_module = ['v1.user','v1.voter+super_get_user', 'v1.gift','v1.votelist','v1.getmessages']
     forbidden = ['v1.voter+super_delete_user']
 
     def __init__(self):

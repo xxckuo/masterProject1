@@ -31,6 +31,7 @@ def get_token():
     t = {
         'code':200,
         'token': token.decode('ascii'),
+        'scope':2 if identity['scope'] == 'AdminScope' else 1,
         'msg': 'ok'
     }
     return jsonify(t), 200

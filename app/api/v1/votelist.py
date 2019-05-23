@@ -29,11 +29,11 @@ def get_list():
         list ={}
         list['vl_id'] = vl[0]
         list['voterinstatus'] = vl[1]
-        list['votelist_name'] = vl[2]
-        list['votelist_year'] = vl[3]
-        list['votelist_votetype'] = vl[4]
-        list['votelist_votestatus'] = vl[5]
-        list['votelist_votenum'] = vl[6]
+        list['name'] = vl[2]
+        list['year'] = vl[3]
+        list['votetype'] = vl[4]
+        list['votestatus'] = vl[5]
+        list['votenum'] = vl[6]
         lists.append(list)
 
     return Success(msg='查询列表成功',data = lists)
