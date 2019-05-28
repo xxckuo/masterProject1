@@ -8,6 +8,8 @@ from app.models.base import db
 from app.models.excellentresult import Excellentresult
 from app.models.graduateresult import Graduateresult
 from app.models.masterstudents import Masterstudents
+from app.models.votelist import Votelist
+from app.models.voterin import Voterin
 
 api = Redprint('show_result')
 
@@ -82,3 +84,19 @@ def add_students():
                          error_code=1002)
 
     return Success(msg='投票结果显示成功', data = list)
+
+@api.route('/showlist',methods=['GET'])
+@auth.login_required
+def showlist():
+    lists = Votelist.query.filter(Votelist.votestatus ==1).all()
+
+    list = []
+    for li in lists:
+        # list.append(li.to_json())
+        data = {}
+        data['vl_id'] = li.vl_id
+        data['name'] = li.name
+        data['votetype'] = li.votetype
+        list.append(data)
+    return Success(msg='查询成功', data=list)
+
