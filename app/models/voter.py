@@ -9,7 +9,7 @@ class Voter(Base):
     id = Column(Integer, primary_key=True)
     teacher_account = Column(String(24), unique=True, nullable=False)
     nickname = Column(String(24))
-    auth = Column(SmallInteger, default=1)
+    auth = Column(SmallInteger, default=1)#2是可以查看成绩的高级管理员1是参与投票的普通老师
     _password = Column('password', String(100))
 
     def keys(self):
@@ -39,6 +39,7 @@ class Voter(Base):
         if not user.check_password(password):
             raise AuthFailed()
         scope = 'AdminScope' if user.auth == 2 else 'UserScope'
+
         return {'uid': user.id, 'scope': scope}
 
     def check_password(self, raw):

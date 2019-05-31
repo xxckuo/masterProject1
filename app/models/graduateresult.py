@@ -34,7 +34,8 @@ class Graduateresult(Base):
     def update_graduatew_result(s_id, vl_id, graduate_result,degree_result):
         with db.auto_commit():
             grad = Graduateresult.query.filter(Graduateresult.s_id == s_id,
-                                               Graduateresult.vl_id == vl_id).first_or_404('该学生未参与投票'+s_id)
+                                               Graduateresult.vl_id == vl_id).first_or_404('该学生未参与投票'+str(s_id)
+                                                                                           )
             if int(graduate_result) == 1:
                 grad.g_agreenum = grad.g_agreenum - 1
                 grad.g_disagreenum = grad.g_disagreenum + 1
@@ -53,7 +54,11 @@ class Graduateresult(Base):
     def update_graduatew_result_by_all(s_id, vl_id, graduate_result, degree_result):
         with db.auto_commit():
             grad = Graduateresult.query.filter(Graduateresult.s_id == s_id,
-                                               Graduateresult.vl_id == vl_id).first_or_404('该学生未参与投票' + s_id)
+                                               Graduateresult.vl_id == vl_id).first_or_404('该学生未参与投票' + str(s_id))
+            if int(grad.g_agreenum) == -1:
+                print('--')
+                return
+            print('1')
             if int(graduate_result) == 1:
                 grad.g_disagreenum = grad.g_disagreenum + 1
             elif int(graduate_result) == 2:
@@ -61,9 +66,10 @@ class Graduateresult(Base):
             elif int(graduate_result) == 0:
                 grad.g_agreenum = grad.g_agreenum + 1
 
+
             if int(degree_result) == 1:
                 grad.d_disagreenum = grad.d_disagreenum + 1
             elif int(degree_result) == 2:
                 grad.d_abstained = grad.d_abstained + 1
-            elif int(degree_result) == 2:
+            elif int(degree_result) == 0:
                 grad.d_agreenum = grad.d_agreenum + 1

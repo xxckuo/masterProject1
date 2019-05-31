@@ -65,7 +65,6 @@ def upload_vote_result():
     return Success(msg='投票成功')
 
 
-
 def upload_excellent(jsonData):
     # 上传到优秀毕业生投票结果表
     for res in jsonData['data']:

@@ -89,7 +89,7 @@ def add_students():
 @auth.login_required
 def showlist():
     lists = Votelist.query.filter(Votelist.votestatus ==1).all()
-
+    
     list = []
     for li in lists:
         # list.append(li.to_json())
