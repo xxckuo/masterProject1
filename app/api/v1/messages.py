@@ -27,7 +27,7 @@ def getmessages():
                              Masterstudents.s_id, Masterstudents.account,
                              Masterstudents.major, Masterstudents.title,
                              Masterstudents.tutor, Masterstudents.college,
-                             Masterstudents.thesisurl, Masterstudents.name).filter(Excellentresult.vl_id==jsonData['vl_id'],Masterstudents.s_id==Excellentresult.s_id).all()
+                             Masterstudents.thesisurl, Masterstudents.name,Excellentresult.er_id).filter(Excellentresult.vl_id==jsonData['vl_id'],Masterstudents.s_id==Excellentresult.s_id).all()
             # .limit(jsonData['limit'])\
 
         for t in a:
@@ -45,6 +45,7 @@ def getmessages():
             d['thesisurl'] = t[10]
             d['student_name'] = t[11]
             d['student_status'] = 3
+            d['er_id'] = t['12']
             messages.append(d)
 
     if int(jsonData['votetype']) == 1:
