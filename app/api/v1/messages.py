@@ -51,7 +51,7 @@ def getmessages():
         a = db.session.query(Graduateresult.s_id, Graduateresult.g_agreenum,Graduateresult.g_disagreenum,Graduateresult.g_abstained,
                              Graduateresult.d_agreenum, Graduateresult.d_disagreenum,Graduateresult.d_abstained,Masterstudents.s_id, Masterstudents.account,
                              Masterstudents.major, Masterstudents.title, Masterstudents.tutor,
-                             Masterstudents.college, Masterstudents.thesisurl,Masterstudents.name).filter(Graduateresult.vl_id==jsonData['vl_id'],Masterstudents.s_id==Graduateresult.s_id).all()
+                             Masterstudents.college, Masterstudents.thesisurl,Masterstudents.name,Graduateresult.gr_id).filter(Graduateresult.vl_id==jsonData['vl_id'],Masterstudents.s_id==Graduateresult.s_id).all()
         # b= db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,Voterin.voterinstatus,Voter.nickname,Voter.teacher_account,Voter.auth,Votelist.votestatus,Votelist.votenum).join(Voterin,Voterin.voter_id == Voter.id).filter(Voterin.vl_id == jsonData['vl_id'],Votelist.vl_id==jsonData['vl_id'],Excellentresult.vl_id==jsonData['vl_id']).all()
         # messages = []
         for t in a:
@@ -78,6 +78,7 @@ def getmessages():
             d['student_name'] = t[14]
             d['g_student_status'] = 3
             d['d_student_status'] = 3
+            d['gr_id'] = t[15]
             messages.append(d)
 
     return Success(msg='投票详情查询成功',data=messages)

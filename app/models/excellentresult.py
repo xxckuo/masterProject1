@@ -36,10 +36,9 @@ class Excellentresult(Base):
                 exce.abstained = exce.abstained + 1
 
     @staticmethod
-    def update_excellent_result_by_all(s_id, vl_id, excellent_result):
+    def update_excellent_result_by_all(er_id, excellent_result):
         with db.auto_commit():
-            exce = Excellentresult.query.filter(Excellentresult.s_id == s_id,
-                                                Excellentresult.vl_id == vl_id).first_or_404('该学生未参与投票' + str(s_id))
+            exce = Excellentresult.query.filter(Excellentresult.er_id == er_id).first_or_404('该学生未参与投票')
             if int(excellent_result) == 1:
                 exce.disagreenum = exce.disagreenum + 1
             elif int(excellent_result) == 2:
