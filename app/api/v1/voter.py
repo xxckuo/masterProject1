@@ -71,14 +71,12 @@ def upload_excellent(jsonData):
     # 上传到优秀毕业生投票结果表
     for res in jsonData['data']:
         # if int(res['excellent_result']) != 0:
-        Excellentresult.update_excellent_result_by_all(res['er_id'],res['excellent_result'])
+        Excellentresult.update_excellent_result_by_all(res['gr_id'],res['excellent_result'])
 
 def upload_graduate(jsonData):
     # 上传到学生毕业和是否授予学位的表
     start = time.time()
     for res in jsonData['data']:
-        if int(res['graduate_result'] == -1):
-            continue
         if int(res['graduate_result']) != 0 or int(res['degree_result']) != 0:
             Graduateresult.update_graduatew_result_by_all(res['gr_id'],res['graduate_result'],res['degree_result'])
 

@@ -55,12 +55,12 @@ class Graduateresult(Base):
         with db.auto_commit():
             grad = Graduateresult.query.filter(Graduateresult.gr_id == gr_id).first_or_404('该学生未参与投票')
 
-            grad.d_agreenum = grad.d_agreenum - 1
-            grad.g_agreenum = grad.g_agreenum - 1
 
             if int(degree_result) == 1:
+                grad.d_agreenum = grad.d_agreenum - 1
                 grad.d_disagreenum = grad.d_disagreenum + 1
             elif int(degree_result) == 2:
+                grad.d_agreenum = grad.d_agreenum - 1
                 grad.d_abstained = grad.d_abstained + 1
             # elif int(degree_result) == 0:
             #     grad.d_agreenum = grad.d_agreenum + 1
@@ -68,7 +68,9 @@ class Graduateresult(Base):
 
             if int(graduate_result) == 1:
                 grad.g_disagreenum = grad.g_disagreenum + 1
+                grad.g_agreenum = grad.g_agreenum - 1
             elif int(graduate_result) == 2:
                 grad.g_abstained = grad.g_abstained + 1
+                grad.g_agreenum = grad.g_agreenum - 1
             # elif int(graduate_result) == 0:
             #     grad.g_agreenum = grad.g_agreenum + 1

@@ -45,7 +45,7 @@ def getmessages():
             d['thesisurl'] = t[10]
             d['student_name'] = t[11]
             d['student_status'] = 3
-            d['er_id'] = t['12']
+            d['gr_id'] = t[12]
             messages.append(d)
 
     if int(jsonData['votetype']) == 1:
