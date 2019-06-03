@@ -3,7 +3,9 @@ from .app import Flask
 
 def register_blueprints(app):
     from app.api.v1 import create_blueprint_v1
+    from app.api.cms import create_blueprint_cms
     app.register_blueprint(create_blueprint_v1(), url_prefix='/master/v1')
+    app.register_blueprint(create_blueprint_cms(), url_prefix='/master/cms')
 
 
 def register_plugin(app):
