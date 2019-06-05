@@ -17,7 +17,7 @@ class Masterstudents(Base):
     _password = Column('password', String(100))
 
     def keys(self):
-        return ['id', 'email', 'nickname', 'auth']
+        return ['s_id', 'name', 'account', 'major', 'title', 'tutor', 'college', 'thesisurl']
 
     @staticmethod
     def add_student(name, account, major, title, tutor,college,thesisurl):

@@ -38,7 +38,14 @@ class Voter(Base):
         user = Voter.query.filter_by(teacher_account=teacher_account).first_or_404('账号不存在')
         if not user.check_password(password):
             raise AuthFailed()
-        scope = 'AdminScope' if user.auth == 2 else 'UserScope'
+        # scope = 'AdminScope' if user.auth == 2 else 'UserScope'
+        # scope = 'CmsScope' if user.auth == 2 else 'TestScope'
+        if user.auth == 1:
+            scope = 'UserScope'
+        elif user.auth == 2:
+            scope = 'AdminScope'
+        elif user.auth == 3:
+            scope = 'CmsScope'
 
         return {'uid': user.id, 'scope': scope}
 

@@ -15,10 +15,10 @@ class Votelist(Base):
     votenum = Column(Integer,comment='投票人总数')
 
     def keys(self):
-        return ['name', 'year', 'votetype', 'votestatus','votenum']
+        return ['vl_id','name', 'year', 'votetype', 'votestatus','votenum','create_time']
 
     @staticmethod
-    def add_votelist(name, year, votetype,votestatus,votenum):
+    def add_votelist(name, year, votetype, votestatus, votenum):
         with db.auto_commit():
             votelist = Votelist()
             votelist.name = name
@@ -33,3 +33,19 @@ class Votelist(Base):
         with db.auto_commit():
             vote = Votelist.query.filter(Votelist.vl_id == vl_id).first()
             vote.votestatus = 1
+
+    @staticmethod
+    def update_votelist(data):
+        with db.auto_commit():
+            vote = Votelist.query.filter(Votelist.vl_id == data['vl_id']).first()
+            if data['name'] != '':
+                print('不空')
+                vote.name = data['name']
+            if data['year'] != '':
+                vote.year = data['year']
+            if data['votetype'] != '':
+                vote.votetype = data['votetype']
+            if data['votestatus'] != '':
+                vote.votestatus = data['votestatus']
+            if data['votenum'] != '':
+                vote.votenum = data['votenum']

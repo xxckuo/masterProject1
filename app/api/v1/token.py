@@ -28,10 +28,16 @@ def get_token():
                                 # form.type.data,
                                 identity['scope'],
                                 expiration)
+    if identity['scope'] == 'UserScope':
+        scope = 1
+    elif identity['scope'] == 'AdminScope':
+        scope = 2
+    elif identity['scope'] == 'CmsScope':
+        scope = 3
     t = {
         'code':200,
         'token': token.decode('ascii'),
-        'scope':2 if identity['scope'] == 'AdminScope' else 1,
+        'scope':scope,
         'msg': 'ok'
     }
     return jsonify(t), 200

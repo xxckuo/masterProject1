@@ -37,6 +37,12 @@ class UserScope(Scope):
         self + AdminScope()
     # allow_api = ['v1.user+get_user', 'v1.user+delete_user']
 
+class CmsScope(Scope):
+    allow_module = ['cms.masterstudents','cms.voter','cms.votelist','cms.voteresult']
+    # forbidden = ['v1.cms+cms1']
+
+    def __init__(self):
+        pass
 
 def is_in_scope(scope, endpoint):
     # scope()

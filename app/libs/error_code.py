@@ -5,7 +5,7 @@ from app.libs.error import APIException
 
 
 class Success(APIException):
-    code = 201
+    code = 200
     msg = 'ok'
     error_code = 0
     data = dict()
