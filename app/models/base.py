@@ -1,5 +1,4 @@
-from app.libs.error_code import NotFound
-
+from app.libs.error_code import NotFound, SqlError
 
 from datetime import datetime
 
@@ -18,6 +17,14 @@ class SQLAlchemy(_SQLAlchemy):
             db.session.rollback()
             raise e
 
+    @contextmanager
+    def my_auto_commit(self):
+        try:
+            yield
+            self.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise SqlError(msg= '账号' +str(e.params[2])+'已存在数据库中')
 
 class Query(BaseQuery):
     def filter_by(self, **kwargs):

@@ -43,6 +43,10 @@ class NotFound(APIException):
     msg = 'the resource are not found O__O...'
     error_code = 1001
 
+class SqlError(APIException):
+    code = 401
+    msg = '数据已存在数据库'
+    error_code = 1001
 
 class AuthFailed(APIException):
     code = 401
