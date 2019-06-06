@@ -23,7 +23,7 @@ def verify_password(token, password):
     # key=Authorization
     # value =basic base64(qiyue:123456)
     user_info = verify_auth_token(token)
-    if not user_info:
+    if not user_info :
         return False
     else:
         # request
@@ -35,6 +35,7 @@ def verify_auth_token(token):
     s = Serializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(token)
+
     except BadSignature:
         raise AuthFailed(msg='token is invalid',
                          error_code=1002)
