@@ -24,7 +24,7 @@ def master():
     jsonData = request.get_json()
     BASE_DIR = os.path.dirname(__file__)
     print(BASE_DIR)
-    url = "https://mastera.oss-cn-beijing.aliyuncs.com/student%20%281%29.xlsx?Expires=1559829227&OSSAccessKeyId=TMP.AgE-JRsLpo-9vtgtIE9jvUF9zu2GNu1cpI_nNENWRLPtMpQP6EEx_Dqc-Rz-ADAtAhR4YVgl8J6iJGix9ZAuWoT6aFGnfAIVALC40lDdIMZ1s3ELL8xf7-ECU-EA&Signature=TcbsOtgqfk6LJEb9drneLib4MLc%3D"
+    url = "https://mastera.oss-cn-beijing.aliyuncs.com/student%20%281%29.xlsx?Expires=1559831039&OSSAccessKeyId=TMP.AgE-JRsLpo-9vtgtIE9jvUF9zu2GNu1cpI_nNENWRLPtMpQP6EEx_Dqc-Rz-ADAtAhR4YVgl8J6iJGix9ZAuWoT6aFGnfAIVALC40lDdIMZ1s3ELL8xf7-ECU-EA&Signature=zN8%2FqlC3jR%2FL1uUU7XUvOTUcgg8%3D"
     downPath = BASE_DIR+'\\'+jsonData["filename"]
     a = urllib.request.urlretrieve(url, downPath)
 
@@ -52,6 +52,7 @@ def master():
             masterstudents.name = a[1]
             masterstudents.major = a[2]
             masterstudents.title = a[3]
+            masterstudents.thesisurl = a[7]
             masterstudents.tutor = a[4]
             masterstudents.college = a[5]
             masterstudents.grade = a[6]
@@ -84,6 +85,7 @@ def alter():
             masterstudents.thesisurl = data["thesisurl"]
             masterstudents.college = data["college"]
             masterstudents.major= data["major"]
+            masterstudents.grade= data["grade"]
             masterstudents.account = data["account"]
             masterstudents.title = data["title"]
             return Success(msg='修改成功')
@@ -100,6 +102,7 @@ def input_student():
         masterstudents.title = data["title"]
         masterstudents.tutor = data["tutor"]
         masterstudents.college = data["college"]
+        masterstudents.grade = data["grade"]
         masterstudents._password = data["password"]
         masterstudents.thesisurl = data["thesisurl"]
         db.session.add(masterstudents)
