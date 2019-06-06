@@ -65,13 +65,10 @@ def master():
 
 @api.route('/select_students')
 @auth.login_required
-def select_student():
-        data = request.args.get("s_id")
-        student_message = Masterstudents.query.filter(Masterstudents.s_id ==data).all()
-        student_messages = []
-        for me in student_message:
-            student_messages.append(me.to_json())
-        return Success(msg='查找成功', data=student_messages)
+def select_students():
+        s_id = request.args.get('s_id')
+        student_message = Masterstudents.query.filter(Masterstudents.s_id == s_id).all()
+        return Success(msg='查找成功', data=student_message)
 
 @api.route('/alter',methods= ['POST'])
 @auth.login_required
