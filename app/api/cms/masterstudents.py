@@ -1,26 +1,35 @@
-
+import os
+import time
 import xlrd
-import requests
+import urllib.request
 from flask import request
-
 from app.models.base import db
 from app.models.masterstudents import Masterstudents
 from app.libs.error_code import  Success
 from app.libs.redprint import Redprint
+import urllib
+import urllib.error
+import requests
+
 
 api = Redprint('masterstudents')
 
 
-@api.route('/excel_add')
+@api.route('/excel_add',methods = ['POST'])
 def master():
-    path = 'D:/student.xlsx'
+    jsonData = request.get_json()
+    BASE_DIR = os.path.dirname(__file__)
+    print(BASE_DIR)
+    url = "https://mastera.oss-cn-beijing.aliyuncs.com/student.xlsx?Expires=1559822601&OSSAccessKeyId=TMP.AgE-JRsLpo-9vtgtIE9jvUF9zu2GNu1cpI_nNENWRLPtMpQP6EEx_Dqc-Rz-ADAtAhR4YVgl8J6iJGix9ZAuWoT6aFGnfAIVALC40lDdIMZ1s3ELL8xf7-ECU-EA&Signature=zQF9EX1G6uravV4eVzx6yhhlveM%3D"
+    downPath = BASE_DIR+'\\'+jsonData["filename"]
+    a = urllib.request.urlretrieve(url, downPath)
+
+    path = downPath
     workbook = xlrd.open_workbook(path)
 
     Data_sheet = workbook.sheets()[0]  # 通过索引获取
-
     rowNum = Data_sheet.nrows  # sheet行数
     colNum = Data_sheet.ncols  # sheet列数
-    #
 
     list = []
     for i in range(rowNum):
@@ -30,8 +39,10 @@ def master():
         list.append(rowlist)
     del list[0]
     # print(list)
-    for a in list:
-        with db.auto_commit():
+    start = time.time()
+
+    with db.auto_commit():
+        for a in list:
             masterstudents = Masterstudents()
             masterstudents.account= a[0]
             masterstudents.name = a[1]
@@ -41,11 +52,13 @@ def master():
             masterstudents.college = a[5]
             masterstudents._password = a[0]
             db.session.add(masterstudents)
-
+    os.remove(downPath)
+    end = time.time()
+    print(end - start)
     return Success(msg='新增学生信息成功')
 
 @api.route('/select_students')
-def select():
+def select_student():
         data = request.args.get("s_id")
         student_message = Masterstudents.query.filter(Masterstudents.s_id ==data).all()
         student_messages = []
@@ -93,4 +106,13 @@ def delete_student():
        messages.status = 0
 
    return Success(msg='删除学生信息成功')
+@api.route('/select_students')
+def select():
+    masterstudent = Masterstudents.query(Masterstudents.account).all()
+    # a = db.session.query
+    # masterstudents= []
+    # for stu in masterstudent:
+    #     masterstudents.append(stu.to_json())
+    return Success(msg='查找成功',data=masterstudent)
+
 
