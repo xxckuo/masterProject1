@@ -17,7 +17,7 @@ api = Redprint('votelist')
 @api.route('/getvotelist')
 @auth.login_required
 def get():
-    vls = Votelist.query.all()
+    vls = Votelist.query.filter(Votelist.status!=0).all()
     return Success(msg='查询列表成功', data=vls)
 
 @api.route('/createlist',methods=['POST'])
@@ -28,12 +28,14 @@ def create_list():
     return Success(msg='新增成功',error_code=201)
 
 @api.route('/updatevotelist',methods=['POST'])
+@auth.login_required
 def update_votelist():
     jsonData = request.get_json()
     Votelist.update_votelist(jsonData)
     return Success(msg='修改成功')
 
 @api.route('/get_have_voter')
+@auth.login_required
 def get_voter_voterin():
     vl_id = request.args.get('vl_id')
     voterinres = db.session.query(Voterin.vi_id,Voterin.vl_id,Voterin.voter_id,Voterin.voterinstatus,Voter.id,
@@ -53,6 +55,7 @@ def get_voter_voterin():
     return Success(data=voterinList)
 
 @api.route('/get_havet_voter')
+@auth.login_required
 def get_all_voter():
     vl_id = request.args.get('vl_id')
     voterinres = db.session.query(Voterin.voter_id).filter(Voterin.vl_id == vl_id).all()
@@ -63,6 +66,7 @@ def get_all_voter():
     return Success(data=voterlist)
 
 @api.route('/getstudents')
+@auth.login_required
 def get_students_votein():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
@@ -125,6 +129,7 @@ def get_excellent(vl_id):
     return returnlist
 
 @api.route('/get_havet_students')
+@auth.login_required
 def get_havenot_students():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
@@ -153,6 +158,7 @@ def get_havet_excellent(vl_id,session):
 
 
 @api.route('/addvotertovoterin',methods=['POST'])
+@auth.login_required
 def add_voter_to_voterin():
     # 将投票人新增到voterin表中，代表该投票人参与了该次投票
     jsonData = request.get_json()
@@ -161,6 +167,7 @@ def add_voter_to_voterin():
     return Success(msg='添加投票人成功',error_code=201)
 
 @api.route('/addexcellentresult',methods=['POST'])
+@auth.login_required
 def add_excellentresult():
     jsonData = request.get_json()
     for excres in jsonData['data']:
@@ -173,6 +180,7 @@ def add_excellentresult():
     return Success(msg='初始化优秀毕业生投票结果成功',error_code=201)
 
 @api.route('/graduateresult',methods=['POST'])
+@auth.login_required
 def add_graduateresult():
     jsonData = request.get_json()
     for excres in jsonData['data']:

@@ -39,7 +39,7 @@ class Votelist(Base):
         with db.auto_commit():
             vote = Votelist.query.filter(Votelist.vl_id == data['vl_id']).first()
             if data['name'] != '':
-                print('不空')
+                # print('不空')
                 vote.name = data['name']
             if data['year'] != '':
                 vote.year = data['year']
@@ -49,3 +49,5 @@ class Votelist(Base):
                 vote.votestatus = data['votestatus']
             if data['votenum'] != '':
                 vote.votenum = data['votenum']
+            if data['status'] == 0:
+                vote.status = data['status']
