@@ -133,27 +133,28 @@ def get_excellent(vl_id):
 def get_havenot_students():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
-    session = 2016
+    grade = 2016
     if int(votetype) ==1:
-        lists = get_havet_gradute(vl_id, session)
+        lists = get_havet_gradute(vl_id, grade)
     else:
-        lists = get_havet_excellent(vl_id, session)
+        lists = get_havet_excellent(vl_id, grade)
     return Success(data=lists)
 
-def get_havet_gradute(vl_id,session):
+def get_havet_gradute(vl_id,grade):
     gradHaveNotList = db.session.query(Graduateresult.s_id).filter(Graduateresult.vl_id==vl_id).all()
     returnList = []
     for gl in gradHaveNotList:
         returnList.append(gl[0])
-    gradlist = Masterstudents.query.filter(Masterstudents.s_id.notin_(returnList)).all()
+    # gradlist = Masterstudents.query.filter(Masterstudents.s_id.notin_(returnList)).all()
+    gradlist = Masterstudents.query.filter(Masterstudents.grade == grade,Masterstudents.s_id.notin_(returnList)).all()
     return gradlist
 
-def get_havet_excellent(vl_id,session):
+def get_havet_excellent(vl_id,grade):
     exceHaveNotList = db.session.query(Excellentresult.s_id).filter(Excellentresult.vl_id==vl_id).all()
     returnList = []
     for gl in exceHaveNotList:
         returnList.append(gl[0])
-    excelist = Masterstudents.query.filter(Masterstudents.s_id.notin_(returnList)).all()
+    excelist = Masterstudents.query.filter(Masterstudents.grade == grade,Masterstudents.s_id.notin_(returnList)).all()
     return excelist
 
 

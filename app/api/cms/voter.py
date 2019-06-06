@@ -6,6 +6,7 @@ from app.libs.error_code import AuthFailed, Success, SqlError
 from app.libs.redprint import Redprint
 import xlrd
 
+from app.libs.token_auth import auth
 from app.models.voter import Voter
 from app.models.base import db
 
@@ -30,6 +31,7 @@ def voter_post():
 
 
 @api.route('/add',methods=['POST'])
+@auth.login_required
 def voter():
     jsonData = request.get_json()
     if Voter.query.filter(Voter.teacher_account==jsonData['teacher_account']).first():

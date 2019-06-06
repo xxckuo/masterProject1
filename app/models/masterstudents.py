@@ -14,10 +14,11 @@ class Masterstudents(Base):
     tutor = Column(String(20),comment='指导教师')
     college = Column(String(24),comment='所在培养单位')
     thesisurl = Column(String(500),comment='论文连接')
+    grade = Column(Integer,comment='年级')
     _password = Column('password', String(100))
 
     def keys(self):
-        return ['s_id', 'name', 'account', 'major', 'title', 'tutor', 'college', 'thesisurl']
+        return ['s_id', 'name', 'account', 'major', 'title', 'tutor', 'college', 'thesisurl','grade']
 
     @staticmethod
     def add_student(name, account, major, title, tutor,college,thesisurl):
