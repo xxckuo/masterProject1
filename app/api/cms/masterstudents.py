@@ -24,7 +24,7 @@ def master():
     jsonData = request.get_json()
     BASE_DIR = os.path.dirname(__file__)
     print(BASE_DIR)
-    url = "https://mastera.oss-cn-beijing.aliyuncs.com/student%20%281%29.xlsx?Expires=1559831039&OSSAccessKeyId=TMP.AgE-JRsLpo-9vtgtIE9jvUF9zu2GNu1cpI_nNENWRLPtMpQP6EEx_Dqc-Rz-ADAtAhR4YVgl8J6iJGix9ZAuWoT6aFGnfAIVALC40lDdIMZ1s3ELL8xf7-ECU-EA&Signature=zN8%2FqlC3jR%2FL1uUU7XUvOTUcgg8%3D"
+    url = jsonData['url']
     downPath = BASE_DIR+'\\'+jsonData["filename"]
     a = urllib.request.urlretrieve(url, downPath)
 
@@ -63,6 +63,7 @@ def master():
     print(end - start)
     return Success(msg='新增学生信息成功')
 
+#根据学生id查找学生
 @api.route('/select_students')
 @auth.login_required
 def select_students():
@@ -115,7 +116,7 @@ def delete_student():
        messages.status = 0
    return Success(msg='删除学生信息成功')
 
-
+#根据学生年级查找
 @api.route('/select',methods = ['POST'])
 @auth.login_required
 def select():
