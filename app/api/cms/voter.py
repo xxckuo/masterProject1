@@ -17,6 +17,7 @@ api = Redprint('voter')
 # 小菜鸟
 
 @api.route('/show',methods = ['POST'])
+@auth.login_required
 def voter_show():
 
     data = request.get_json()
@@ -39,6 +40,7 @@ def voter_show():
 
 
 @api.route('/addlist',methods = ['POST'])
+@auth.login_required
 def voter_post():
 
     curPath = os.getcwd()
@@ -73,6 +75,7 @@ def voter():
     return Success(msg='老师新增成功')
 
 @api.route('/update',methods=['POST'])
+@auth.login_required
 def update():
     data = request.get_json()
     # 传一个条件代表删除
@@ -88,6 +91,7 @@ def add_voter(teacher_account,nickname):
         voter.password = teacher_account
         voter.auth =1
         db.session.add(voter)
+
 
 def add_voterlist(rowlist):
     # start = time.time()
