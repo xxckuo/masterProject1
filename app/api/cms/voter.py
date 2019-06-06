@@ -1,4 +1,7 @@
+import os
+
 import requests
+import time
 
 from flask import request
 
@@ -13,20 +16,49 @@ from app.models.base import db
 api = Redprint('voter')
 # 小菜鸟
 
+@api.route('/show',methods = ['POST'])
+def voter_show():
+
+    data = request.get_json()
+
+    list = Voter.query.filter(Voter.status==1).limit(data['limit']).offset(data['offset']).all()
+
+    data = []
+
+    for voter in list:
+        voters = {}
+        voters['voter_id']=voter.id
+        voters['voter_account']=voter.teacher_account
+        voters['voter_name']=voter.nickname
+        voters['auth'] = voter.auth
+        data.append(voters)
+
+    return Success(msg='查询成功', data=data)
+
+
+
+
 @api.route('/addlist',methods = ['POST'])
 def voter_post():
+
+    curPath = os.getcwd()
     data = request.get_json()
     Download_url = data['url']
     r = requests.get(Download_url)
-    f = open("教师3.xls","wb")
+    # print(data['filename'])
+    f = open(data['filename'],"wb")
+    # f = open("教师.xls","wb")
     f.write(r.content)
     f.close()
 
-    url = xlrd.open_workbook(r'D:\Pythonprogram\masterProject1\教师3.xls')
+
+    url = xlrd.open_workbook(curPath+'\\'+data['filename'])
+    # url = xlrd.open_workbook("教师.xls")
     table = url.sheets()[0]
     nrows = table.nrows  # 行数
     row_list = [table.row_values(i) for i in range(1, nrows)]  # 所有行的数据
     add_voterlist(row_list)
+
     return Success(msg = '批量导入教师成功')
 
 
@@ -58,6 +90,7 @@ def add_voter(teacher_account,nickname):
         db.session.add(voter)
 
 def add_voterlist(rowlist):
+    # start = time.time()
     with db.my_auto_commit():
         for list in rowlist:
             voter = Voter()
@@ -66,3 +99,6 @@ def add_voterlist(rowlist):
             voter.password = list[0]
             voter.auth =1
             db.session.add(voter)
+    # print('交话费')
+    # end = time.time()
+    # print(end - start)
