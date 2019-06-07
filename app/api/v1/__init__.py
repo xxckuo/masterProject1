@@ -1,6 +1,5 @@
 from flask import Blueprint
-from app.api.v1 import voter, client, token, votelist,students,showresult,messages
-
+from app.api.v1 import voter, client, token, votelist, students, showresult, messages
 
 
 def create_blueprint_v1():
@@ -13,4 +12,5 @@ def create_blueprint_v1():
     students.api.register(bp_v1)
     showresult.api.register(bp_v1)
     messages.api.register(bp_v1)
+
     return bp_v1

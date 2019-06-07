@@ -31,6 +31,7 @@ def voter_show():
         voters['voter_id']=voter.id
         voters['voter_account']=voter.teacher_account
         voters['voter_name']=voter.nickname
+
         voters['auth'] = voter.auth
         data.append(voters)
 
@@ -45,6 +46,7 @@ def voter_post():
 
     curPath = os.getcwd()
     data = request.get_json()
+    # 获取url
     Download_url = data['url']
     r = requests.get(Download_url)
     # print(data['filename'])
