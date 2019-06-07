@@ -1,7 +1,8 @@
 from sqlalchemy import inspect, Column, Integer, String, SmallInteger, orm
+from sqlalchemy.util.compat import contextmanager
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app.libs.error_code import NotFound, AuthFailed
+from app.libs.error_code import NotFound, AuthFailed, SqlError, Success
 from app.models.base import Base, db, MixinJSONSerializer
 import datetime
 
@@ -14,6 +15,7 @@ class Voter(Base):
 
     def keys(self):
         return ['id', 'teacher_account', 'nickname', 'auth']
+
 
     @property
     def password(self):
@@ -58,3 +60,20 @@ class Voter(Base):
     # def _set_fields(self):
     #     # self._exclude = ['_password']
     #     self._fields = ['_password', 'nickname']
+
+    def update_voter(data):
+        with db.auto_commit():
+            if len(data) ==1:
+                vote = Voter.query.filter(Voter.id == data['teacher_id']).first_or_404('账号不存在')
+                vote.status = 0
+                raise Success(msg='删除老师成功')
+            else:
+                vote = Voter.query.filter(Voter.id == data['teacher_id']).first_or_404('账号不存在')
+                if data['teacher_account'] != '':
+                    vote.teacher_account = data['teacher_account']
+                if data['nickname'] !='':
+                    vote.nickname = data['nickname']
+                if data['auth'] !='':
+                    vote.auth = data['auth']
+                if data['password'] !='':
+                    vote.password = data['password']

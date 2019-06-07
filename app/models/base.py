@@ -25,6 +25,7 @@ class SQLAlchemy(_SQLAlchemy):
         except Exception as e:
             db.session.rollback()
             raise SqlError(msg= '账号' +str(e.params[2])+'已存在数据库中')
+            # raise e
 
 class Query(BaseQuery):
     def filter_by(self, **kwargs):
