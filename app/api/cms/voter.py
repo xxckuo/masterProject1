@@ -4,8 +4,9 @@ import requests
 import time
 
 from flask import request
+from sqlalchemy import func
 
-from app.libs.error_code import AuthFailed, Success, SqlError
+from app.libs.error_code import AuthFailed, Success, SqlError, SuccessPage
 from app.libs.redprint import Redprint
 import xlrd
 
@@ -17,12 +18,15 @@ api = Redprint('voter')
 # 小菜鸟
 
 @api.route('/show',methods = ['POST'])
-@auth.login_required
+# @auth.login_required
 def voter_show():
 
     data = request.get_json()
 
     list = Voter.query.filter(Voter.status==1).limit(data['limit']).offset(data['offset']).all()
+
+    total = db.session.query(func.count(Voter.id)).first()
+    totalnum = total[0]
 
     data = []
 
@@ -35,7 +39,7 @@ def voter_show():
         voters['auth'] = voter.auth
         data.append(voters)
 
-    return Success(msg='查询成功', data=data)
+    return SuccessPage(msg='查询成功', data=data,totalnum=totalnum)
 
 
 
