@@ -136,12 +136,12 @@ def select():
     data = request.get_json()
     if data['grade']== '':
         masterstudent = Masterstudents.query.filter(Masterstudents!=0).limit(data['limit']).offset(data['offset']).all()
-        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents!=0).all()
-        totalnum = total[0][0]
+        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents!=0).first()
+        totalnum = total[0]
     else:
         masterstudent =Masterstudents.query.filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).limit(data['limit']).offset(data['offset']).all()
-        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).all()
-        totalnum = total[0][0]
+        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).first()
+        totalnum = total[0]
     return SuccessPage(msg='查找成功', data=masterstudent,totalnum=totalnum)
 
 

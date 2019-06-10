@@ -25,7 +25,8 @@ def voter_show():
 
     list = Voter.query.filter(Voter.status==1).limit(data['limit']).offset(data['offset']).all()
 
-    total = db.session.query(func.count(Voter.id)).first()
+    # total = db.session.query(func.count(Voter.id)).first()
+    total = db.session.query(func.count(Voter.id)).filter(Voter.status==1).first()
     totalnum = total[0]
 
     data = []

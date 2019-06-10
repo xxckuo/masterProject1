@@ -29,7 +29,7 @@ def add_students():
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,
                          Masterstudents.college,Masterstudents.thesisurl
                          ).filter(Excellentresult.s_id==Masterstudents.s_id,Excellentresult.vl_id==jsonData['vl_id']).limit(jsonData['limit']).offset(jsonData['offset']).all()
-        totalres = db.session.query(func.count(Excellentresult.er_id)).filter(Excellentresult.s_id == Masterstudents.s_id,Excellentresult.vl_id == jsonData['vl_id']).all()
+        totalres = db.session.query(func.count(Excellentresult.er_id)).filter(Excellentresult.s_id == Masterstudents.s_id,Excellentresult.vl_id == jsonData['vl_id']).first()
         list = []
         for re in results:
             result={}
@@ -64,7 +64,7 @@ def add_students():
                          ).limit(jsonData['limit']).offset(jsonData['offset']).all()
         totalres = db.session.query(func.count(Graduateresult.gr_id)).filter(Graduateresult.s_id == Masterstudents.s_id,
                                             Graduateresult.vl_id == jsonData['vl_id']
-                                            ).all()
+                                            ).first()
         list=[]
         for re in results:
             result = {}
@@ -88,7 +88,7 @@ def add_students():
         raise AuthFailed(msg='没有权限查看',
                          error_code=1002)
 
-    return SuccessPage(msg='投票结果显示成功', data = list,totalnum=totalres[0][0])
+    return SuccessPage(msg='投票结果显示成功', data = list,totalnum=totalres[0])
 
 @api.route('/showlist',methods=['GET'])
 @auth.login_required
