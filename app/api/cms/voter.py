@@ -1,5 +1,5 @@
 import os
-
+import urllib.request
 import requests
 import time
 
@@ -31,6 +31,7 @@ def voter_show():
         voters['voter_id']=voter.id
         voters['voter_account']=voter.teacher_account
         voters['voter_name']=voter.nickname
+
         voters['auth'] = voter.auth
         data.append(voters)
 
@@ -45,13 +46,19 @@ def voter_post():
 
     curPath = os.getcwd()
     data = request.get_json()
+    # 获取url
     Download_url = data['url']
-    r = requests.get(Download_url)
+    # r = requests.get(Download_url)
     # print(data['filename'])
-    f = open(data['filename'],"wb")
+    # f = open(data['filename'],"wb")
     # f = open("教师.xls","wb")
-    f.write(r.content)
-    f.close()
+    # f.write(r.content)
+    # f.close()
+    # downPath = '..\\表格.xls'
+    # print(downPath)
+    downPath = curPath+'\\'+data['filename']
+    # print(downPath2)
+    urllib.request.urlretrieve(Download_url, downPath)
 
 
     url = xlrd.open_workbook(curPath+'\\'+data['filename'])

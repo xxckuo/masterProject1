@@ -53,6 +53,7 @@ def master():
         list.append(rowlist)
     del list[0]
     # print(list)
+
     start = time.time()
 
     with db.auto_commit():
