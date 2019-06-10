@@ -17,6 +17,16 @@ import requests
 api = Redprint('masterstudents')
 
 
+@api.route('/get_grade')
+@auth.login_required
+def get_grade():
+    grade = db.session.query(Masterstudents.grade).group_by(Masterstudents.grade).order_by(Masterstudents.grade.desc()).all()
+    returndata = []
+    for g in grade:
+        returndata.append(g[0])
+
+    return Success(data=returndata)
+
 @api.route('/excel_add',methods = ['POST'])
 @auth.login_required
 def master():
@@ -112,6 +122,7 @@ def input_student():
 def delete_student():
    s_id = request.args.get('s_id')
    with db.auto_commit():
+       # 删除学生接口未验证学生是否存在
        messages = Masterstudents.query.filter(Masterstudents.s_id==s_id).first()
        messages.status = 0
    return Success(msg='删除学生信息成功')
@@ -122,10 +133,10 @@ def delete_student():
 def select():
     data = request.get_json()
     if data['grade']== '':
-        masterstudent = Masterstudents.query.filter().limit(data['limit']).offset(data['offset']).all()
+        masterstudent = Masterstudents.query.filter(Masterstudents!=0).limit(data['limit']).offset(data['offset']).all()
 
     else:
-        masterstudent =Masterstudents.query.filter(Masterstudents.grade == data['grade']).limit(data['limit']).offset(data['offset']).all()
+        masterstudent =Masterstudents.query.filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).limit(data['limit']).offset(data['offset']).all()
 
     return Success(msg='查找成功',data=masterstudent)
 

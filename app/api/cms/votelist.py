@@ -34,12 +34,13 @@ def update_votelist():
     Votelist.update_votelist(jsonData)
     return Success(msg='修改成功')
 
-@api.route('/get_have_voter')
+@api.route('/get_have_voter',methods=['POST'])
 @auth.login_required
 def get_voter_voterin():
+    data = request.get_json()
     vl_id = request.args.get('vl_id')
     voterinres = db.session.query(Voterin.vi_id,Voterin.vl_id,Voterin.voter_id,Voterin.voterinstatus,Voter.id,
-                                  Voter.teacher_account,Voter.nickname,Voter.auth).filter(Voterin.vl_id == vl_id,Voter.id == Voterin.voter_id).all()
+                                  Voter.teacher_account,Voter.nickname,Voter.auth).filter(Voterin.vl_id == vl_id,Voter.id == Voterin.voter_id).limit(data['limit']).offset(data['offset']).all()
     voterinList = []
     for vi in voterinres:
         templist = {}
@@ -62,26 +63,27 @@ def get_all_voter():
     voterHaveInList = []
     for vi in voterinres:
         voterHaveInList.append(vi[0])
-    voterlist = Voter.query.filter(Voter.id.notin_(voterHaveInList)).all()
+    voterlist = Voter.query.filter(Voter.id.notin_(voterHaveInList),Voter.auth!=3).all()
     return Success(data=voterlist)
 
-@api.route('/getstudents')
+@api.route('/getstudents',methods=['POST'])
 @auth.login_required
 def get_students_votein():
+    data = request.get_json()
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
     if int(votetype) ==1:
-        lists = get_graduate(vl_id)
+        lists = get_graduate(vl_id,data)
     else:
-        lists = get_excellent(vl_id)
+        lists = get_excellent(vl_id,data)
     return Success(data=lists)
 
-def get_graduate(vl_id):
+def get_graduate(vl_id,data):
     lists = db.session.query(Graduateresult.gr_id,Graduateresult.s_id,Graduateresult.vl_id,
                              Graduateresult.g_agreenum,Graduateresult.g_disagreenum,Graduateresult.g_abstained,
                              Graduateresult.d_agreenum,Graduateresult.d_disagreenum,Graduateresult.d_abstained,
                              Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,
-                             Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Graduateresult.vl_id == vl_id,Graduateresult.s_id == Masterstudents.s_id).all()
+                             Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Graduateresult.vl_id == vl_id,Graduateresult.s_id == Masterstudents.s_id).limit(data['limit']).offset(data['offset']).all()
     returnlist =[]
     for l in lists:
         templist = {}
@@ -104,11 +106,11 @@ def get_graduate(vl_id):
         returnlist.append(templist)
     return returnlist
 
-def get_excellent(vl_id):
+def get_excellent(vl_id,data):
     list = db.session.query(Excellentresult.er_id,Excellentresult.s_id,Excellentresult.vl_id,
                             Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,
                             Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,
-                             Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Excellentresult.vl_id == vl_id,Excellentresult.s_id == Masterstudents.s_id).all()
+                             Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Excellentresult.vl_id == vl_id,Excellentresult.s_id == Masterstudents.s_id).limit(data['limit']).offset(data['offset']).all()
     returnlist = []
     for l in list:
         templist = {}
@@ -133,7 +135,9 @@ def get_excellent(vl_id):
 def get_havenot_students():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
-    grade = 2016
+    gr = Votelist.query.filter(Votelist.vl_id == vl_id).first()
+    # print(gr['year'])
+    grade = gr['year']
     if int(votetype) ==1:
         lists = get_havet_gradute(vl_id, grade)
     else:
@@ -163,7 +167,12 @@ def get_havet_excellent(vl_id,grade):
 def add_voter_to_voterin():
     # 将投票人新增到voterin表中，代表该投票人参与了该次投票
     jsonData = request.get_json()
+    # print(jsonData)
+    # for voter in jsonData:
+    #     # print(jsonData[voter])
+    #     Voterin.add_voter_to_voterin(jsonData[voter]['vl_id'],jsonData[voter]['voter_id'])
     for voter in jsonData['data']:
+        # print(jsonData[voter])
         Voterin.add_voter_to_voterin(voter['vl_id'],voter['voter_id'])
     return Success(msg='添加投票人成功',error_code=201)
 

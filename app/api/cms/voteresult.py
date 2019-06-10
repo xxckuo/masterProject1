@@ -5,6 +5,7 @@ import flask_excel as excel
 # from flask.ext import excel
 from app.libs.error_code import Success, AuthFailed
 from app.libs.redprint import Redprint
+from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.excellentresult import Excellentresult
 from app.models.graduateresult import Graduateresult
@@ -15,12 +16,14 @@ from app.models.voter import Voter
 api = Redprint('voteresult')
 
 @api.route('/get_vote_list')
+@auth.login_required
 def get_vote_list_by_votetype():
     votetype = request.args.get('votetype')
     voteres = Votelist.query.filter(Votelist.votetype == votetype).all()
     return Success(data=voteres)
 
 @api.route('/exp_excel', methods=['GET'])
+# @auth.login_required
 def exp_excel():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')

@@ -22,7 +22,7 @@ def add_students():
     # 是否需要在全部完成投票后形成汇总
     # 分页？
     # 判断投票是否已结束，根据votestatus进行判断
-    if int(jsonData['type']) ==2 and g.voter.scope =='AdminScope':
+    if int(jsonData['type']) ==2:
         results = db.session.query(Excellentresult.s_id,Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,
                          Masterstudents.college,Masterstudents.thesisurl
@@ -53,7 +53,7 @@ def add_students():
             list.append(result)
 
 
-    elif int(jsonData['type']) ==1 and g.voter.scope =='AdminScope':
+    elif int(jsonData['type']) ==1:
         results = db.session.query(Graduateresult.s_id,Graduateresult.g_agreenum,Graduateresult.g_disagreenum,Graduateresult.g_abstained,
                                    Graduateresult.d_agreenum, Graduateresult.d_disagreenum, Graduateresult.d_abstained,
                          Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,Masterstudents.tutor,

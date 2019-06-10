@@ -38,7 +38,7 @@ class UserScope(Scope):
     # allow_api = ['v1.user+get_user', 'v1.user+delete_user']
 
 class CmsScope(Scope):
-    allow_module = ['cms.masterstudents','cms.voter','cms.votelist','cms.voteresult']
+    allow_module = ['cms.masterstudents','cms.voter','cms.votelist','cms.voteresult','v1.show_result']
     # forbidden = ['v1.cms+cms1']
 
     def __init__(self):

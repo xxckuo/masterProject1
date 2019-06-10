@@ -79,8 +79,8 @@ def voter():
 def update():
     data = request.get_json()
     # 传一个条件代表删除
-    Voter.update_voter(data)
-    return Success(msg='修改老师信息成功')
+    msg = Voter.update_voter(data)
+    return Success(msg=msg)
 
 
 def add_voter(teacher_account,nickname):
