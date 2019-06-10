@@ -3,11 +3,12 @@ import time
 import xlrd
 import urllib.request
 from flask import request
+from sqlalchemy import func
 
 from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.masterstudents import Masterstudents
-from app.libs.error_code import  Success
+from app.libs.error_code import Success, SuccessPage
 from app.libs.redprint import Redprint
 import urllib
 import urllib.error
@@ -135,10 +136,12 @@ def select():
     data = request.get_json()
     if data['grade']== '':
         masterstudent = Masterstudents.query.filter(Masterstudents!=0).limit(data['limit']).offset(data['offset']).all()
-
+        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents!=0).all()
+        totalnum = total[0][0]
     else:
         masterstudent =Masterstudents.query.filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).limit(data['limit']).offset(data['offset']).all()
-
-    return Success(msg='查找成功',data=masterstudent)
+        total = db.session.query(func.count(Masterstudents.s_id)).filter(Masterstudents.grade == data['grade'],Masterstudents.status!=0).all()
+        totalnum = total[0][0]
+    return SuccessPage(msg='查找成功', data=masterstudent,totalnum=totalnum)
 
 

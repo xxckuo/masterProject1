@@ -1,7 +1,6 @@
 from werkzeug.exceptions import HTTPException
 
-from app.libs.error import APIException
-
+from app.libs.error import APIException, APIExceptions
 
 
 class Success(APIException):
@@ -10,6 +9,12 @@ class Success(APIException):
     error_code = 0
     data = dict()
 
+class SuccessPage(APIExceptions):
+    code = 200
+    msg = 'ok'
+    error_code = 0
+    data = dict()
+    totalnum = 0
 
 class DeleteSuccess(Success):
     code = 202

@@ -66,7 +66,8 @@ class Voter(Base):
             if len(data) ==1:
                 vote = Voter.query.filter(Voter.id == data['teacher_id']).first_or_404('账号不存在')
                 vote.status = 0
-                raise Success(msg='删除老师成功')
+                # raise Success(msg='删除老师成功')
+                return '删除老师成功'
             else:
                 vote = Voter.query.filter(Voter.id == data['teacher_id']).first_or_404('账号不存在')
                 if data['teacher_account'] != '':
@@ -77,3 +78,4 @@ class Voter(Base):
                     vote.auth = data['auth']
                 if data['password'] !='':
                     vote.password = data['password']
+                return '修改老师信息成功'
