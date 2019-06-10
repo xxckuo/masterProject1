@@ -41,7 +41,7 @@ def voter_show():
 
 
 @api.route('/addlist',methods = ['POST'])
-# @auth.login_required
+@auth.login_required
 def voter_post():
 
     curPath = os.getcwd()
