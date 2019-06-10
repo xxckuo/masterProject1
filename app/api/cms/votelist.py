@@ -1,6 +1,7 @@
 from flask import request
+from sqlalchemy import func
 
-from app.libs.error_code import Success
+from app.libs.error_code import Success, SuccessPage
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
@@ -41,6 +42,7 @@ def get_voter_voterin():
     vl_id = request.args.get('vl_id')
     voterinres = db.session.query(Voterin.vi_id,Voterin.vl_id,Voterin.voter_id,Voterin.voterinstatus,Voter.id,
                                   Voter.teacher_account,Voter.nickname,Voter.auth).filter(Voterin.vl_id == vl_id,Voter.id == Voterin.voter_id).limit(data['limit']).offset(data['offset']).all()
+    totalres = db.session.query(func.count(Voterin.vi_id)).filter(Voterin.vl_id == vl_id,Voter.id == Voterin.voter_id).all()
     voterinList = []
     for vi in voterinres:
         templist = {}
@@ -53,7 +55,7 @@ def get_voter_voterin():
         templist['nickname'] = vi[6]
         templist['auth'] = vi[7]
         voterinList.append(templist)
-    return Success(data=voterinList)
+    return SuccessPage(data=voterinList,totalnum=totalres[0][0])
 
 @api.route('/get_havet_voter')
 @auth.login_required
@@ -73,10 +75,10 @@ def get_students_votein():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
     if int(votetype) ==1:
-        lists = get_graduate(vl_id,data)
+        lists,totalnum = get_graduate(vl_id,data)
     else:
-        lists = get_excellent(vl_id,data)
-    return Success(data=lists)
+        lists,totalnum = get_excellent(vl_id,data)
+    return SuccessPage(data=lists,totalnum=totalnum)
 
 def get_graduate(vl_id,data):
     lists = db.session.query(Graduateresult.gr_id,Graduateresult.s_id,Graduateresult.vl_id,
@@ -84,6 +86,7 @@ def get_graduate(vl_id,data):
                              Graduateresult.d_agreenum,Graduateresult.d_disagreenum,Graduateresult.d_abstained,
                              Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,
                              Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Graduateresult.vl_id == vl_id,Graduateresult.s_id == Masterstudents.s_id).limit(data['limit']).offset(data['offset']).all()
+    totalres = db.session.query(func.count(Graduateresult.gr_id)).filter(Graduateresult.vl_id == vl_id, Graduateresult.s_id == Masterstudents.s_id).all()
     returnlist =[]
     for l in lists:
         templist = {}
@@ -104,13 +107,15 @@ def get_graduate(vl_id,data):
         templist['college'] = l[14]
         templist['thesisurl'] = l[15]
         returnlist.append(templist)
-    return returnlist
+    return returnlist,totalres[0][0]
 
 def get_excellent(vl_id,data):
     list = db.session.query(Excellentresult.er_id,Excellentresult.s_id,Excellentresult.vl_id,
                             Excellentresult.agreenum,Excellentresult.disagreenum,Excellentresult.abstained,
                             Masterstudents.name,Masterstudents.account,Masterstudents.major,Masterstudents.title,
                              Masterstudents.tutor,Masterstudents.college,Masterstudents.thesisurl).filter(Excellentresult.vl_id == vl_id,Excellentresult.s_id == Masterstudents.s_id).limit(data['limit']).offset(data['offset']).all()
+    totalres = db.session.query(func.count(Excellentresult.er_id)).filter(Excellentresult.vl_id == vl_id, Excellentresult.s_id == Masterstudents.s_id).all()
+
     returnlist = []
     for l in list:
         templist = {}
@@ -128,7 +133,7 @@ def get_excellent(vl_id,data):
         templist['college'] = l[11]
         templist['thesisurl'] = l[12]
         returnlist.append(templist)
-    return returnlist
+    return returnlist,totalres[0][0]
 
 @api.route('/get_havet_students')
 @auth.login_required
