@@ -12,6 +12,7 @@ from app.models.graduateresult import Graduateresult
 from app.models.masterstudents import Masterstudents
 from app.models.votelist import Votelist
 from app.models.voter import Voter
+from app.models.voterin import Voterin
 
 api = Redprint('voteresult')
 
@@ -28,7 +29,6 @@ def exp_excel():
     vl_id = request.args.get('vl_id')
     votetype = request.args.get('votetype')
     filename = request.args.get('filename')
-    print(filename)
     if int(votetype) == 1:
         # lists = get_graduate_excel(vl_id)
         q = db.session.query(Graduateresult.s_id.label('id'), Graduateresult.g_agreenum.label('毕业同意数'), Graduateresult.g_disagreenum.label('毕业不同意数'),
@@ -79,3 +79,22 @@ def exp_excel():
             file_type='xlsx',
             file_name=filename if filename !=None else '数据'+ '.xlsx'
         )
+
+@api.route('/exp_voterin_excel', methods=['GET'])
+# http://localhost:5000/master/cms/voteresult/exp_excel?vl_id=7&filename=shuju
+# @auth.login_required
+def exp_voterin_excel():
+    vl_id = request.args.get('vl_id')
+    filename = request.args.get('filename')
+    # lists = get_graduate_excel(vl_id)
+    q = db.session.query(Voter.teacher_account.label('教工号'),Voter.nickname.label('委员姓名')).filter(Voterin.vl_id == vl_id,Voter.id == Voterin.voter_id)
+    query_sets = q.all()
+    return excel.make_response_from_query_sets(
+        query_sets,
+        column_names=[
+            '教工号',
+            '委员姓名'
+        ],
+        file_type='xlsx',
+        file_name= filename if filename !=None else '数据'+ '.xlsx'
+    )
