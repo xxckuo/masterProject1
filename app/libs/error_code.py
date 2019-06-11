@@ -49,7 +49,7 @@ class NotFound(APIException):
     error_code = 1001
 
 class SqlError(APIException):
-    code = 401
+    code = 200
     msg = '数据已存在数据库'
     error_code = 1001
 
